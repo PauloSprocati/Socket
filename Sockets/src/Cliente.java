@@ -1,7 +1,10 @@
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 public class Cliente {
+
+    static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         String serverAddress = "144.22.201.166";
@@ -13,26 +16,24 @@ public class Cliente {
             InputStream inputStream = socket.getInputStream();
             OutputStream outputStream = socket.getOutputStream();
 
-            String ra = "12345";
-            String senha = "senha123";
-            String regUserMessage = "REG USER " + ra + " " + senha;
-            outputStream.write((regUserMessage + "\n").getBytes());
-            System.out.println("Enviado: " + regUserMessage);
+            System.out.print("Digite a sua mensagem:");
+            var mensagem = sc.nextLine();
+            outputStream.write((mensagem + "\n").getBytes());
+            System.out.println("Enviado: " + mensagem);
 
-            String response = readResponse(inputStream);
-            System.out.println("Resposta do servidor: " + response);
+            String resposta = readResponse(inputStream);
+            System.out.println("Resposta do servidor: " + resposta);
 
-            String askSecretMessage = "ASK SECRET " + ra + " " + senha;
-            outputStream.write((askSecretMessage + "\n").getBytes());
-            System.out.println("Enviado: " + askSecretMessage);
+            System.out.print("Digite a sua mensagem:");
+            mensagem = sc.nextLine();
+            outputStream.write((mensagem + "\n").getBytes());
+            System.out.println("Enviado: " + mensagem);
 
-            response = readResponse(inputStream);
-            System.out.println("Resposta do servidor: " + response);
+            resposta = readResponse(inputStream);
+            System.out.println("Resposta do servidor: " + resposta);
 
-            if (response != null && response.startsWith("RESPONSE 200")) {
-                String secretWord = response.split(" ")[1];
-                System.out.println("Palavra secreta recebida: " + secretWord);
-            }
+            String secretWord = resposta.split(" ")[1];
+            System.out.println("Palavra secreta recebida: " + secretWord);
 
         } catch (IOException e) {
             System.err.println("Erro de conexão: " + e.getMessage());
