@@ -7,29 +7,29 @@ public class Cliente {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
-        String serverAddress = "144.22.201.166";
-        int port = 9000;
+        String endereco = "144.22.201.166";
+        int porta = 9000;
 
-        try (Socket socket = new Socket(serverAddress, port)) {
+        try (Socket socket = new Socket(endereco, porta)) {
             System.out.println("Conectado ao servidor");
 
-            InputStream inputStream = socket.getInputStream();
-            OutputStream outputStream = socket.getOutputStream();
+            OutputStream entrada = socket.getOutputStream();
+            InputStream saida = socket.getInputStream();
 
             System.out.print("Digite a sua mensagem:");
             var mensagem = sc.nextLine();
-            outputStream.write((mensagem + "\n").getBytes());
+            entrada.write((mensagem + "\n").getBytes());
             System.out.println("Enviado: " + mensagem);
 
-            String resposta = readResponse(inputStream);
+            String resposta = readResponse(saida);
             System.out.println("Resposta do servidor: " + resposta);
 
             System.out.print("Digite a sua mensagem:");
             mensagem = sc.nextLine();
-            outputStream.write((mensagem + "\n").getBytes());
+            entrada.write((mensagem + "\n").getBytes());
             System.out.println("Enviado: " + mensagem);
 
-            resposta = readResponse(inputStream);
+            resposta = readResponse(saida);
             System.out.println("Resposta do servidor: " + resposta);
 
             String secretWord = resposta.split(" ")[1];
